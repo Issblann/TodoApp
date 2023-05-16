@@ -1,8 +1,11 @@
 import { createContext, useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-export const TaskContext = createContext();
+export const PageContext = createContext();
 
-export function TaskContextProvider(props) {
+function PageContextProvider({ children }) {
+  const [data, setData] = useState("");
+  const [pokemon, setPokemon] = useState("");
+
   const [tasks, setTasks] = useState(() => {
     const storedTasks = localStorage.getItem("tasks");
     return storedTasks ? JSON.parse(storedTasks) : [];
@@ -27,14 +30,20 @@ export function TaskContextProvider(props) {
   };
 
   return (
-    <TaskContext.Provider
+    <PageContext.Provider
       value={{
         tasks,
         deleteTask,
         createTask,
+        data,
+        setData,
+        pokemon,
+        setPokemon,
       }}
     >
-      {props.children}
-    </TaskContext.Provider>
+      {children}
+    </PageContext.Provider>
   );
 }
+
+export default PageContextProvider;

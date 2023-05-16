@@ -2,12 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import { TaskContextProvider } from "./context/TaskContext";
+import PageContextProvider from "./context/Context";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <TaskContextProvider>
+    <PageContextProvider>
       <App />
-    </TaskContextProvider>
+    </PageContextProvider>
   </React.StrictMode>
 );

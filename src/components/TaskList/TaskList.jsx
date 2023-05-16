@@ -1,15 +1,16 @@
 import TaskCard from "../TaskCard/TaskCard";
-import { TaskContext } from "../../context/TaskContext";
-// import { useLocalStorage } from "./UseLocalStorage";
+import { PageContext } from "../../context/Context";
 import { useContext } from "react";
 function TaskList() {
-  const { tasks } = useContext(TaskContext);
+  const { tasks } = useContext(PageContext);
 
   if (tasks.length === 0) {
     return (
-      <h1 className="text-white text-4xl font-bold text-center">
-        No hay tareas aun
-      </h1>
+      <div>
+        <h1 className="text-white text-4xl font-bold text-center">
+          No hay tareas aun
+        </h1>
+      </div>
     );
   }
 

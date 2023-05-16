@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
-import { TaskContext } from "../../context/TaskContext";
+import { PageContext } from "../../context/Context";
 function TaskForm() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const { createTask } = useContext(TaskContext);
+  const { createTask } = useContext(PageContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,8 +15,8 @@ function TaskForm() {
     setDescription("");
   };
   return (
-    <div className="sm:max-w-2xl m-auto w-full bg-purple-300">
-      <form onSubmit={handleSubmit} className="bg-slate-800 p-10 mb-4">
+    <div className="sm:max-w-2xl mb-5 w-ful px-2">
+      <form onSubmit={handleSubmit} className="bg-slate-800 p-10 mb-4 mt-8">
         <h1 className="text-2xl font-bold text-white mb-3">Crea tu tarea</h1>
         <input
           placeholder="Escribe tu tarea"

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 export const PageContext = createContext();
 
 function PageContextProvider({ children }) {
-  const [data, setData] = useState("");
+  const [data, setData] = useState({});
   const [pokemon, setPokemon] = useState("");
 
   const [tasks, setTasks] = useState(() => {

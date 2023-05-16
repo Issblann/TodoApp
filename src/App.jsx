@@ -18,6 +18,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/TodoPage" element={<TodoPage />} />
           <Route path="/PokeAPI" element={<PokeApiPge />} />
+          <Route path="/pokemon/:pokemon" element={<PokeApiPge />} />
         </Routes>
       </Router>
     </>

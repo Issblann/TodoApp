@@ -1,35 +1,36 @@
 import React from "react";
 import axios from "axios";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { PageContext } from "../../context/Context";
-const CardPokemon = ({ pokemon }) => {
-  const { data, setData } = useContext(PageContext);
-
-  const APIURL = `https://pokeapi.co/api/v2/pokemon/${pokemon}`;
-
-  const { name, order, sprites, stats, types } = data;
-
-  const getPokemon = () => {
-    axios
-      .get(APIURL)
-      .then((res) => {
-        const data = res.data;
-        setData(data);
-        console.log(data);
-      })
-
-      .catch((error) => console.log(error));
-  };
-
+import "./CardPokemon.css";
+const CardPokemon = () => {
+  const { pokemon } = useContext(PageContext);
+  const [pokemonData, setPokemonData] = useState(null);
   useEffect(() => {
-    getPokemon();
+    if (pokemon) {
+      const APIURL = `https://pokeapi.co/api/v2/pokemon/${pokemon}`;
+
+      axios
+        .get(APIURL)
+        .then((res) => {
+          setPokemonData(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }, [pokemon]);
-  console.log(name);
+  if (!pokemonData) {
+    return (
+      <h1 className="text-2xl flex justify-center mt-3">Ingrese un pokemon</h1>
+    );
+  }
+  const { name, order, sprites, stats, types } = pokemonData || {};
 
   return (
-    <section className="w-full ">
-      <div className="w-3/5 flex flex-col shadow-md items-center justify-center mx-auto">
-        <div className="h-44 bg-fuchsia-200 w-full flex items-center justify-center">
+    <section className="w-full mt-6 h-full">
+      <div className="w-4/12 gap-5 flex flex-col shadow-md items-center justify-center mx-auto container-pokemoncard">
+        <div className="h-44 bg-redPokeAPI -200 w-full flex items-center justify-center">
           <img
             className="text-center h-40"
             width="210px"
@@ -37,40 +38,27 @@ const CardPokemon = ({ pokemon }) => {
             alt={name}
           />
         </div>
-        <div>
-          <h1>ID</h1>
-          <div>
-            <span></span>
-            <h1>Nombre pokemon</h1>
-            <span></span>
-          </div>
+        <div className="flex flex-col gap-2 text-redPokeAPI w-full  items-center ">
+          <h1 className="text-center">{order}</h1>
 
-          <div>
-            <div>
-              <small>Peso</small>
-              <p>69</p>
-            </div>
-            <div>
-              <small>Altura</small>
-              <p>7</p>
-            </div>
+          <div className="flex items-center gap-2">
+            <span className="h-0.5 w-14 bg-gray-800"></span>
+            <h1>{name}</h1>
+            <span className="h-0.5 w-14 bg-gray-800"></span>
           </div>
-
-          <div>
-            <div>
-              <h2>Tipo</h2>
-              <div>
-                <p>Planta</p>
-                <p>Venenoso</p>
-              </div>
-            </div>
-            <div>
-              <h2>Habilidades</h2>
-              <div>
-                <p>Crecimiento</p>
-                <p>Clorofila</p>
-              </div>
-            </div>
+        </div>
+        <div className="flex gap-5 bg-zinc-700 w-full items-center justify-center">
+          <div className="flex flex-col ">
+            <p className="text-white">Peso</p>
+            <small className="font-bold text-white text-center">
+              {pokemonData.weight}
+            </small>
+          </div>
+          <div className="flex flex-col">
+            <p className="text-white">Altura</p>
+            <small className="font-bold text-white text-center">
+              {pokemonData.height}
+            </small>
           </div>
         </div>
       </div>

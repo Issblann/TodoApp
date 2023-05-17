@@ -1,0 +1,8 @@
+@media (max-width: 640px) {
+  .container-text-and-ilustration {
+    flex-direction: column !important;
+  }
+  .container-text-and-ilustration h1 {
+    font-size: 40px;
+  }
+}

@@ -3,29 +3,22 @@ import axios from "axios";
 import { useEffect, useContext, useState } from "react";
 import { PageContext } from "../../context/Context";
 import "./CardPokemon.css";
-const CardPokemon = () => {
-  const { pokemon } = useContext(PageContext);
-  const [pokemonData, setPokemonData] = useState(null);
-  useEffect(() => {
-    if (pokemon) {
-      const APIURL = `https://pokeapi.co/api/v2/pokemon/${pokemon}`;
-
-      axios
-        .get(APIURL)
-        .then((res) => {
-          setPokemonData(res.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+const CardPokemon = ({ pokemonParams }) => {
+  const { pokemon, data, setData } = useContext(PageContext);
+  if (!pokemonParams) {
+    if (!pokemon) {
+      return (
+        <h1 className="text-2xl flex justify-center mt-3">
+          Ingrese un pokemon
+        </h1>
+      );
     }
-  }, [pokemon]);
-  if (!pokemonData) {
     return (
       <h1 className="text-2xl flex justify-center mt-3">Ingrese un pokemon</h1>
     );
   }
-  const { name, order, sprites, stats, types } = pokemonData || {};
+
+  const { name, order, sprites, weight, height } = data;
 
   return (
     <section className="w-full mt-6 h-full">
@@ -50,15 +43,11 @@ const CardPokemon = () => {
         <div className="flex gap-5 bg-zinc-700 w-full items-center justify-center">
           <div className="flex flex-col ">
             <p className="text-white">Peso</p>
-            <small className="font-bold text-white text-center">
-              {pokemonData.weight}
-            </small>
+            <small className="font-bold text-white text-center">{weight}</small>
           </div>
           <div className="flex flex-col">
             <p className="text-white">Altura</p>
-            <small className="font-bold text-white text-center">
-              {pokemonData.height}
-            </small>
+            <small className="font-bold text-white text-center">{height}</small>
           </div>
         </div>
       </div>

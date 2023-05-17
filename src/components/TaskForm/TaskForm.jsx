@@ -7,6 +7,9 @@ function TaskForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!title) return alert("Ingresa alguna tarea");
+
     createTask({
       title,
       description,

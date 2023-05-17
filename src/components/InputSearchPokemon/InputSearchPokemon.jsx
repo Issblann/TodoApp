@@ -1,18 +1,31 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageContext } from "../../context/Context";
 import CardPokemon from "../CardPokemon/CardPokemon";
+import { getPokemonByName } from "../../API/getPokemonByName";
+import "./InputSearchPokemon.css";
 
-const InputSearchPokemon = () => {
-  const { pokemon, setPokemon } = useContext(PageContext);
+const InputSearchPokemon = ({ pokemonParams }) => {
+  const { pokemon, setPokemon, data, setData } = useContext(PageContext);
+
   const navigate = useNavigate();
-
+  useEffect(() => {
+    if (pokemonParams) {
+      getPokemonByName(pokemonParams).then((res) => setData(res.data));
+    }
+  }, []);
   const onSubmit = (e) => {
     e.preventDefault();
-    const formattedPokemon = pokemon.toLowerCase().trim();
+    const pokemonId = e.target.pokemonid.value;
+
+    setPokemon(pokemonId);
+    getPokemonByName(pokemonId).then((res) => setData(res.data));
+
+    const formattedPokemon = pokemonId.toLowerCase().trim();
     if ((formattedPokemon === "") | !formattedPokemon) return;
-    navigate(`/pokemon/${formattedPokemon}`);
-    setPokemon("");
+    navigate(`/PokeAPI/${formattedPokemon}`);
+
+    e.target.pokemonid.value = "";
   };
 
   return (
@@ -23,14 +36,14 @@ const InputSearchPokemon = () => {
             <span className="text-redPokeAPI">Bienvenido,</span> aquí podrás
             encontrar tu pokemón favorito
           </h1>
-          <div className="flex w-3/5 container-form">
-            <form className="flex mx-auto" onSubmit={onSubmit}>
+          <div className="flex w-full container-form">
+            <form className="flex w-2/4 mx-auto form" onSubmit={onSubmit}>
               <input
+                required
+                id="pokemonid"
                 className="shadow-md p-5 w-full max-w-4xl m-auto items-center justify-center "
                 placeholder="Busca un pokemon"
                 type="text"
-                value={pokemon}
-                onChange={(e) => setPokemon(e.target.value)}
               />
               <button type="submit" className="bg-redPokeAPI text-white w-60 ">
                 Buscar
@@ -39,6 +52,8 @@ const InputSearchPokemon = () => {
           </div>
         </div>
       </section>
+
+      <CardPokemon pokemonParams={pokemonParams} />
     </>
   );
 };
